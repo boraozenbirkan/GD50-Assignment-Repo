@@ -13,26 +13,55 @@
 
 Board = Class{}
 
-function Board:init(x, y)
+function Board:init(x, y, level) -- BORA.2 (C)
     self.x = x
     self.y = y
     self.matches = {}
+    self.level = level -- BORA.2 (C)
 
-    self:initializeTiles()
+    self:initializeTiles({level = self.level}) -- BORA.2 (C)
 end
 
-function Board:initializeTiles()
+-- BORA.2 function to pick a color regards to the current level
+function Board:colorPick(level)
+    limitedColors0 = {1, 17, 2, 12}
+    limitedColors1 = {1, 5, 11, 15, 2, 6, 10, 14}
+    limitedColors2 = {1, 5, 9, 11, 15, 17, 2, 6, 10, 12, 14, 18}
+
+    if level < 3 then
+        color = limitedColors0[math.random(4)] -- 4 colors selected
+    elseif level < 6 then
+        color = limitedColors1[math.random(8)] -- 8 colors selected
+    elseif level < 10 then
+        color = limitedColors2[math.random(12)] -- 12 colors selected
+    else        
+        color = math.random(18) -- After level 7, all the colors comes in
+    end
+    return color
+end
+
+function Board:initializeTiles(params)
     self.tiles = {}
+    self.level = params.level or 1 -- BORA.2 (c)
+
 
     for tileY = 1, 8 do
-        
+
         -- empty table that will serve as a new row
         table.insert(self.tiles, {})
 
         for tileX = 1, 8 do
             
             -- create a new tile at X,Y with a random color and variety
-            table.insert(self.tiles[tileY], Tile(tileX, tileY, math.random(18), math.random(6)))
+            -- BORA.2 I want to make non-flat blocks rare so that deserves more point
+            if math.random(4) == 1 then
+                variety = math.random(math.min(self.level, 6))
+            else
+                variety = 1
+            end
+            -- BORA.2 Changes for color and type
+            table.insert(self.tiles[tileY], Tile(tileX, tileY, 
+                self:colorPick(self.level), variety))
         end
     end
 
@@ -40,7 +69,7 @@ function Board:initializeTiles()
         
         -- recursively initialize if matches were returned so we always have
         -- a matchless board on start
-        self:initializeTiles()
+        self:initializeTiles({level = self.level})
     end
 end
 
@@ -166,13 +195,19 @@ end
     them to nil, then setting self.matches to nil.
 ]]
 function Board:removeMatches()
+    -- BORA.2 if matched blocks non-flat, add extra point for them in the end
+    tempScore = 0
     for k, match in pairs(self.matches) do
         for k, tile in pairs(match) do
+            if self.tiles[tile.gridY][tile.gridX].variety > 1 then
+                tempScore = tempScore + self.tiles[tile.gridY][tile.gridX].variety * 20
+            end
             self.tiles[tile.gridY][tile.gridX] = nil
         end
     end
-
     self.matches = nil
+    -- BORA.2 Return total bonus
+    return tempScore
 end
 
 --[[
@@ -240,7 +275,8 @@ function Board:getFallingTiles()
             if not tile then
 
                 -- new tile with random color and variety
-                local tile = Tile(x, y, math.random(18), math.random(6))
+                local tile = Tile(x, y, -- BORA.2 (c)
+                    self:colorPick(self.level), math.random(math.min(self.level, 6)))
                 tile.y = -32
                 self.tiles[y][x] = tile
 
