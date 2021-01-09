@@ -167,9 +167,7 @@ function PlayState:update(dt)
                 })
                 
                 -- once the swap is finished, we can tween falling blocks as needed
-                :finish(function()
-                    self:calculateMatches()
-                end)
+                self:calculateMatches()                
             end
         end
     end

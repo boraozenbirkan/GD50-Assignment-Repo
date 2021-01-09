@@ -199,8 +199,8 @@ function Board:removeMatches()
     tempScore = 0
     for k, match in pairs(self.matches) do
         for k, tile in pairs(match) do
-            if self.tiles[tile.gridY][tile.gridX].variety > 1 then
-                tempScore = tempScore + self.tiles[tile.gridY][tile.gridX].variety * 20
+            if tile.variety > 1 then
+                tempScore = tempScore + tile.variety * 20
             end
             self.tiles[tile.gridY][tile.gridX] = nil
         end
