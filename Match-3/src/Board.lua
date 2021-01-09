@@ -60,8 +60,14 @@ function Board:initializeTiles(params)
                 variety = 1
             end
             -- BORA.2 Changes for color and type
-            table.insert(self.tiles[tileY], Tile(tileX, tileY, 
-                self:colorPick(self.level), variety))
+            -- BORA.3 Added 1 more if statement for shiny ones
+            if math.random(10) == 1 then
+                table.insert(self.tiles[tileY], Tile(tileX, tileY, 
+                    self:colorPick(self.level), variety, true))
+            else
+                table.insert(self.tiles[tileY], Tile(tileX, tileY, 
+                    self:colorPick(self.level), variety, false))
+            end
         end
     end
 
@@ -107,9 +113,16 @@ function Board:calculateMatches()
 
                     -- go backwards from here by matchNum
                     for x2 = x - 1, x - matchNum, -1 do
-                        
-                        -- add each tile to the match that's in that match
-                        table.insert(match, self.tiles[y][x2])
+                        -- BORA.3 Shiny checking and adding
+                        if self.tiles[y][x2].isShiny then
+                            for x3 = 1, 8 do
+                                table.insert(match, self.tiles[y][x3])
+                            end
+                            break
+                        else
+                            -- add each tile to the match that's in that match
+                            table.insert(match, self.tiles[y][x2])
+                        end
                     end
 
                     -- add this match to our total matches table
@@ -131,9 +144,16 @@ function Board:calculateMatches()
             
             -- go backwards from end of last row by matchNum
             for x = 8, 8 - matchNum + 1, -1 do
-                table.insert(match, self.tiles[y][x])
+                -- BORA.3 Shiny checking and adding
+                if self.tiles[y][x].isShiny then
+                    for x3 = 1, 8 do
+                        table.insert(match, self.tiles[y][x3])
+                    end
+                    break
+                else
+                    table.insert(match, self.tiles[y][x])
+                end
             end
-
             table.insert(matches, match)
         end
     end
@@ -155,7 +175,15 @@ function Board:calculateMatches()
                     local match = {}
 
                     for y2 = y - 1, y - matchNum, -1 do
-                        table.insert(match, self.tiles[y2][x])
+                        -- BORA.3 Shiny checking and adding
+                        if self.tiles[y2][x].isShiny then
+                            for y3 = 1, 8 do
+                                table.insert(match, self.tiles[y3][x])
+                            end
+                            break
+                        else
+                            table.insert(match, self.tiles[y2][x])
+                        end
                     end
 
                     table.insert(matches, match)
@@ -176,9 +204,16 @@ function Board:calculateMatches()
             
             -- go backwards from end of last row by matchNum
             for y = 8, 8 - matchNum + 1, -1 do
-                table.insert(match, self.tiles[y][x])
+                if self.tiles[y][x].isShiny then
+                    for y3 = 1, 8 do
+                        table.insert(match, self.tiles[y3][x])
+                    end
+                    break
+                else
+                    table.insert(match, self.tiles[y][x])
+                end
             end
-
+            
             table.insert(matches, match)
         end
     end
@@ -275,15 +310,26 @@ function Board:getFallingTiles()
             if not tile then
 
                 -- new tile with random color and variety
-                local tile = Tile(x, y, -- BORA.2 (c)
-                    self:colorPick(self.level), math.random(math.min(self.level, 6)))
-                tile.y = -32
-                self.tiles[y][x] = tile
-
-                -- create a new tween to return for this tile to fall down
-                tweens[tile] = {
-                    y = (tile.gridY - 1) * 32
-                }
+                -- BORA.3 Added if statement for shiny ones
+                if math.random(10) == 1 then
+                    local tile = Tile(x, y, -- BORA.2 (c)
+                        self:colorPick(self.level), math.random(math.min(self.level, 6)), true)
+                    tile.y = -32
+                    self.tiles[y][x] = tile
+                    -- create a new tween to return for this tile to fall down
+                    tweens[tile] = {
+                        y = (tile.gridY - 1) * 32
+                    }
+                else
+                    local tile = Tile(x, y, -- BORA.2 (c)
+                        self:colorPick(self.level), math.random(math.min(self.level, 6)), false)
+                    tile.y = -32
+                    self.tiles[y][x] = tile
+                    -- create a new tween to return for this tile to fall down
+                    tweens[tile] = {
+                        y = (tile.gridY - 1) * 32
+                    }                    
+                end        
             end
         end
     end

@@ -52,7 +52,9 @@ gSounds = {
 
 gTextures = {
     ['main'] = love.graphics.newImage('graphics/match3.png'),
-    ['background'] = love.graphics.newImage('graphics/background.png')
+    ['background'] = love.graphics.newImage('graphics/background.png'),
+    -- BORA.3 Added star as a shiny inducator
+    ['star'] = love.graphics.newImage('graphics/star.png')
 }
 
 gFrames = {

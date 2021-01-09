@@ -13,7 +13,7 @@
 
 Tile = Class{}
 
-function Tile:init(x, y, color, variety)
+function Tile:init(x, y, color, variety, isShiny)
     
     -- board positions
     self.gridX = x
@@ -26,6 +26,8 @@ function Tile:init(x, y, color, variety)
     -- tile appearance/points
     self.color = color
     self.variety = variety
+    -- Bora.3 shiny feature added
+    self.isShiny = isShiny
 end
 
 function Tile:render(x, y)
@@ -39,4 +41,12 @@ function Tile:render(x, y)
     love.graphics.setColor(255, 255, 255, 255)
     love.graphics.draw(gTextures['main'], gFrames['tiles'][self.color][self.variety],
         self.x + x, self.y + y)
+
+    -- BORA.3 Shiny Stars
+    if self.isShiny then
+        love.graphics.setColor(255, 255, 255, 255)
+        love.graphics.draw(gTextures['star'], self.x + x + 2, self.y + y + 2)
+        love.graphics.draw(gTextures['star'], self.x + x + 23, self.y + y + 2)
+        love.graphics.draw(gTextures['star'], self.x + x + 17 , self.y + y + 8)
+    end
 end

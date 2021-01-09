@@ -67,7 +67,7 @@ function PlayState:enter(params)
     self.score = params.score or 0
 
     -- score we have to reach to get to the next level
-    self.scoreGoal = self.level * 1.25 * 300 -- düzelt : 300'ü 1000 yap
+    self.scoreGoal = self.level * 1.25 * 1000
 end
 
 function PlayState:update(dt)
@@ -164,7 +164,7 @@ function PlayState:update(dt)
                 local matchExits = self.board:calculateMatches() 
 
                 -- tween coordinates between the two so they swap
-                Timer.tween(0.1, { -- Düzelt: 0.1 olacak
+                Timer.tween(0.1, {
                     [self.highlightedTile] = {x = newTile.x, y = newTile.y},
                     [newTile] = {x = self.highlightedTile.x, y = self.highlightedTile.y}
                 })
