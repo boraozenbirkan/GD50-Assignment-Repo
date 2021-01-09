@@ -160,14 +160,43 @@ function PlayState:update(dt)
 
                 self.board.tiles[newTile.gridY][newTile.gridX] = newTile
 
+                -- Bora.4 information of existance of a match
+                local matchExits = self.board:calculateMatches() 
+
                 -- tween coordinates between the two so they swap
-                Timer.tween(0.1, {
+                Timer.tween(0.1, { -- Düzelt: 0.1 olacak
                     [self.highlightedTile] = {x = newTile.x, y = newTile.y},
                     [newTile] = {x = self.highlightedTile.x, y = self.highlightedTile.y}
                 })
-                
-                -- once the swap is finished, we can tween falling blocks as needed
-                self:calculateMatches()                
+
+                -- BORA.4 once the swap is finished, swap back if there is no matches,
+                -- continue if there is a match
+                :finish(function()
+                    if matchExits == false then
+                        Timer.tween(0.1, {
+							[self.highlightedTile] = {x = newTile.x, y = newTile.y},
+							[newTile] = {x = self.highlightedTile.x, y = self.highlightedTile.y}
+						})
+						tempX = self.highlightedTile.gridX
+						tempY = self.highlightedTile.gridY
+
+						self.highlightedTile.gridX = newTile.gridX
+						self.highlightedTile.gridY = newTile.gridY
+
+						newTile.gridX = tempX
+						newTile.gridY = tempY
+
+						self.board.tiles[self.highlightedTile.gridY][self.highlightedTile.gridX] =
+							self.highlightedTile
+						self.board.tiles[newTile.gridY][newTile.gridX] = newTile
+
+						gSounds['error']:play()
+
+                        self.highlightedTile = nil
+                    else
+                        self:calculateMatches()
+                    end
+                end)
             end
         end
     end
