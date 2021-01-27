@@ -26,15 +26,17 @@ function PlayerFallingState:update(dt)
     self.player.y = self.player.y + (self.player.dy * dt)
 
     -- look at two tiles below our feet and check for collisions
-    local tileBottomLeft = self.player.map:pointToTile(self.player.x + 1, self.player.y + self.player.height)
-    local tileBottomRight = self.player.map:pointToTile(self.player.x + self.player.width - 1, self.player.y + self.player.height)
+    -- BORA.BF Reduced players collision box size to have more challenging and normal game play.
+    -- BORA.BF From now on, player can't walk above chasms (1 to 3)
+    local tileBottomLeft = self.player.map:pointToTile(self.player.x + 3, self.player.y + self.player.height)
+    local tileBottomRight = self.player.map:pointToTile(self.player.x + self.player.width - 3, self.player.y + self.player.height)
 
     -- if we get a collision beneath us, go into either walking or idle
     if (tileBottomLeft and tileBottomRight) and (tileBottomLeft:collidable() or tileBottomRight:collidable()) then
         self.player.dy = 0
         
         -- set the player to be walking or idle on landing depending on input
-        if love.keyboard.isDown('left') or love.keyboard.isDown('right') then
+        if love.keyboard.isDown('a') or love.keyboard.isDown('d') then
             self.player:changeState('walking')
         else
             self.player:changeState('idle')
@@ -48,11 +50,11 @@ function PlayerFallingState:update(dt)
         gStateMachine:change('start')
     
     -- check side collisions and reset position
-    elseif love.keyboard.isDown('left') then
+    elseif love.keyboard.isDown('a') then -- BORA.BF Changed key to move
         self.player.direction = 'left'
         self.player.x = self.player.x - PLAYER_WALK_SPEED * dt
         self.player:checkLeftCollisions(dt)
-    elseif love.keyboard.isDown('right') then
+    elseif love.keyboard.isDown('d') then -- BORA.BF Changed key to move
         self.player.direction = 'right'
         self.player.x = self.player.x + PLAYER_WALK_SPEED * dt
         self.player:checkRightCollisions(dt)
@@ -64,8 +66,8 @@ function PlayerFallingState:update(dt)
             if object.solid then
                 self.player.dy = 0
                 self.player.y = object.y - self.player.height
-
-                if love.keyboard.isDown('left') or love.keyboard.isDown('right') then
+                -- BORA.BF Changed key to move
+                if love.keyboard.isDown('a') or love.keyboard.isDown('d') then
                     self.player:changeState('walking')
                 else
                     self.player:changeState('idle')

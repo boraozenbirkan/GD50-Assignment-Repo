@@ -21,9 +21,10 @@ function PlayerWalkingState:update(dt)
     self.player.currentAnimation:update(dt)
 
     -- idle if we're not pressing anything at all
-    if not love.keyboard.isDown('left') and not love.keyboard.isDown('right') then
+    -- BORA.BF Changed key to move
+    if not love.keyboard.isDown('a') and not love.keyboard.isDown('d') then
         self.player:changeState('idle')
-    else
+    else 
         local tileBottomLeft = self.player.map:pointToTile(self.player.x + 1, self.player.y + self.player.height)
         local tileBottomRight = self.player.map:pointToTile(self.player.x + self.player.width - 1, self.player.y + self.player.height)
 
@@ -38,11 +39,11 @@ function PlayerWalkingState:update(dt)
         if #collidedObjects == 0 and (tileBottomLeft and tileBottomRight) and (not tileBottomLeft:collidable() and not tileBottomRight:collidable()) then
             self.player.dy = 0
             self.player:changeState('falling')
-        elseif love.keyboard.isDown('left') then
+        elseif love.keyboard.isDown('a') then
             self.player.x = self.player.x - PLAYER_WALK_SPEED * dt
             self.player.direction = 'left'
             self.player:checkLeftCollisions(dt)
-        elseif love.keyboard.isDown('right') then
+        elseif love.keyboard.isDown('d') then
             self.player.x = self.player.x + PLAYER_WALK_SPEED * dt
             self.player.direction = 'right'
             self.player:checkRightCollisions(dt)

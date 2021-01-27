@@ -45,11 +45,11 @@ function PlayerJumpState:update(dt)
         self.player:changeState('falling')
 
     -- else test our sides for blocks
-    elseif love.keyboard.isDown('left') then
+    elseif love.keyboard.isDown('a') then -- BORA.BF Changed key to move
         self.player.direction = 'left'
         self.player.x = self.player.x - PLAYER_WALK_SPEED * dt
         self.player:checkLeftCollisions(dt)
-    elseif love.keyboard.isDown('right') then
+    elseif love.keyboard.isDown('d') then -- BORA.BF Changed key to move
         self.player.direction = 'right'
         self.player.x = self.player.x + PLAYER_WALK_SPEED * dt
         self.player:checkRightCollisions(dt)
