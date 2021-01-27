@@ -27,9 +27,11 @@ function LevelMaker.generate(width, height)
         table.insert(tiles, {})
     end
 
+    local last = 0 -- BORA.BF 
+
     -- column by column generation instead of row; sometimes better for platformers
     for x = 1, width do
-        local tileID = TILE_ID_EMPTY
+        local tileID = TILE_ID_EMPTY       
         
         -- lay out the empty space
         for y = 1, 6 do
@@ -38,9 +40,8 @@ function LevelMaker.generate(width, height)
         end
 
         -- chance to just be emptiness
-        -- BORA.1 Avoided chasm in the first column (added x > 1 condition)
-        -- so that player always can start with solid ground
-        if x > 1 and math.random(7) == 1 then
+        -- BORA.1 Avoided chasm in the first 5 and last 10 column
+        if (x > 5 and (width - x > 9)) and math.random(7) == 1 then
             for y = 7, height do
                 table.insert(tiles[y],
                     Tile(x, y, tileID, nil, tileset, topperset))
@@ -56,8 +57,27 @@ function LevelMaker.generate(width, height)
                     Tile(x, y, tileID, y == 7 and topper or nil, tileset, topperset))
             end
 
+            -- BORA.BF Having full flat start for the first 5 tiles
+            if x < 5 then
+                goto tileEnd
+            end
+
+            -- BORA.BF Having Mario-like end which is stairs and post
+            if width - x <= 9 then
+                last = last + 1
+                -- Stairs
+                if last < 5 then
+                    for y = 7 - last, 7 do
+                        tiles[y][x] = Tile(x, y, tileID, y == (7 - last) and topper or nil, tileset, topperset)
+                    end
+                end
+                -- 
+                goto tileEnd
+            end
+
             -- chance to generate a pillar
-            if math.random(8) == 1 then
+            -- BORA.BF pillar avoided in the last 15 column to avoid wierdness
+            if width - x > 15 and math.random(5) == 1 then
                 blockHeight = 2
                 
                 -- chance to generate bush on pillar
@@ -160,6 +180,8 @@ function LevelMaker.generate(width, height)
                     }
                 )
             end
+
+            ::tileEnd:: -- BORA.BF 
         end
     end
 

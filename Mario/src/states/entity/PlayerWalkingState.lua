@@ -25,8 +25,8 @@ function PlayerWalkingState:update(dt)
     if not love.keyboard.isDown('a') and not love.keyboard.isDown('d') then
         self.player:changeState('idle')
     else 
-        local tileBottomLeft = self.player.map:pointToTile(self.player.x + 1, self.player.y + self.player.height)
-        local tileBottomRight = self.player.map:pointToTile(self.player.x + self.player.width - 1, self.player.y + self.player.height)
+        local tileBottomLeft = self.player.map:pointToTile(self.player.x + 3, self.player.y + self.player.height)
+        local tileBottomRight = self.player.map:pointToTile(self.player.x + self.player.width - 3, self.player.y + self.player.height)
 
         -- temporarily shift player down a pixel to test for game objects beneath
         self.player.y = self.player.y + 1
