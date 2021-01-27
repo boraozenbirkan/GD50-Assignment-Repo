@@ -71,7 +71,21 @@ function LevelMaker.generate(width, height)
                         tiles[y][x] = Tile(x, y, tileID, y == (7 - last) and topper or nil, tileset, topperset)
                     end
                 end
-                -- 
+                -- Exit Sign
+                if width - x == 2 then
+                    local deadEnd = GameObject {
+                        texture = 'deadEnd',
+                        x = (x - 1) * TILE_SIZE,
+                        y = 5 * TILE_SIZE,
+                        width = 16,
+                        height = 15,
+                        collidable = false,
+                        consumable = false,
+                        solid = false,
+                        frame = 29
+                    }
+                    table.insert(objects, deadEnd)
+                end
                 goto tileEnd
             end
 

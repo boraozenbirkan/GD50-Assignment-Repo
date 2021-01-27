@@ -7,6 +7,7 @@
 
 PlayState = Class{__includes = BaseState}
 
+-- BORA.BF level design
 function PlayState:init()
 end
 

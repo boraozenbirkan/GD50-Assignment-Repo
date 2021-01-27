@@ -62,7 +62,7 @@ gSounds = {
     ['pickup'] = love.audio.newSource('sounds/pickup.wav', 'static'),
     ['empty-block'] = love.audio.newSource('sounds/empty-block.wav', 'static'),
     ['kill'] = love.audio.newSource('sounds/kill.wav', 'static'),
-    ['kill2'] = love.audio.newSource('sounds/kill2.wav', 'static')
+    ['kill2'] = love.audio.newSource('sounds/kill2.wav', 'static')   
 }
 
 gTextures = {
@@ -73,7 +73,11 @@ gTextures = {
     ['gems'] = love.graphics.newImage('graphics/gems.png'),
     ['backgrounds'] = love.graphics.newImage('graphics/backgrounds.png'),
     ['green-alien'] = love.graphics.newImage('graphics/green_alien.png'),
-    ['creatures'] = love.graphics.newImage('graphics/creatures.png')
+    ['creatures'] = love.graphics.newImage('graphics/creatures.png'),
+
+    -- BORA.3 Added flag and exit sign before flag
+    ['deadEnd'] = love.graphics.newImage('graphics/ladders_and_signs.png'),
+    ['flag'] = love.graphics.newImage('graphics/flag.png')
 }
 
 gFrames = {
@@ -86,7 +90,10 @@ gFrames = {
     ['gems'] = GenerateQuads(gTextures['gems'], 16, 16),
     ['backgrounds'] = GenerateQuads(gTextures['backgrounds'], 256, 128),
     ['green-alien'] = GenerateQuads(gTextures['green-alien'], 16, 20),
-    ['creatures'] = GenerateQuads(gTextures['creatures'], 16, 16)
+    ['creatures'] = GenerateQuads(gTextures['creatures'], 16, 16),
+    -- BORA.3 Added Flag thing
+    ['deadEnd'] = GenerateQuads(gTextures['deadEnd'], 16, 16),
+    ['flag'] = GenerateQuads(gTextures['flag'], 19, 48)
 }
 
 -- these need to be added after gFrames is initialized because they refer to gFrames from within
