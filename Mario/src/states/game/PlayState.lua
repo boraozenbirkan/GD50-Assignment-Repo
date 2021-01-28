@@ -14,7 +14,7 @@ end
 function PlayState:enter(params)
     self.camX = 0
     self.camY = 0
-    self.level = LevelMaker.generate(params.level * 20, 10)
+    self.level = LevelMaker.generate(params.level * 20, 10) -- BORA.BF
     self.tileMap = self.level.tileMap
     self.background = math.random(3)
     self.backgroundX = 0
@@ -35,6 +35,8 @@ function PlayState:enter(params)
         map = self.tileMap,
         level = self.level
     })
+
+    self.player.score = params.score
 
     self:spawnEnemies()
 

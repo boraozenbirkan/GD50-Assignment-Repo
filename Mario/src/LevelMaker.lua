@@ -62,6 +62,66 @@ function LevelMaker.generate(width, height)
             if x < 5 then
                 goto tileEnd
             end
+            
+            -- BORA.BF position the lock at the beggining for the first level
+            -- and position the lock at the middle of the level for upper levels
+            if width > 20 then
+                lockPos = width / 2
+            else
+                lockPos = width / 4
+            end
+
+            -- BORA.2 Lock placed
+            if x == lockPos then
+                local lock = GameObject {
+                    texture = 'keysAndLocks',
+                    x = (x - 1) * TILE_SIZE,
+                    y = (blockHeight - 1) * TILE_SIZE,
+                    width = 16,
+                    height = 16,
+
+                    frame = keyColor + 4,
+                    collidable = true,
+                    solid = true,
+
+                    onCollide = function(player)
+                        if Player:GetKey() then                            
+                            Player:SetKey(false)
+                            -- Remove Dead End sign and the lock block
+                            objects.deadEnd = nil
+                            objects.lock = nil
+                            -- BORA.2 Spawn Flag
+                            local flag = GameObject {
+                                texture = 'flag',
+                                x = (width - 3) * TILE_SIZE,
+                                y = 3 * TILE_SIZE,
+                                width = 19,
+                                height = 48,
+                                collidable = false,
+                                consumable = true,
+                                solid = false,
+                                frame = 1,
+
+                                onConsume = function(player)
+                                    gSounds['powerup-reveal']:play()
+                                    gStateMachine:change('play', {
+                                        level = (width / 20) + 1,
+                                        score = player.score
+                                        })
+                                end
+                            }
+                            table.insert(objects, flag)  
+                                                    
+                            gSounds['powerup-reveal']:play()
+                        else
+                            gSounds['empty-block']:play()
+                            Player:SetKey(false)
+                        end
+                    end
+                }
+                objects.lock = lock
+                goto tileEnd
+            end
 
             -- BORA.BF Having Mario-like end which is stairs and post
             -- BORA.2 Key placed
@@ -87,14 +147,13 @@ function LevelMaker.generate(width, height)
                         frame = keyColor,
 
                         onConsume = function(player)
-                            gSounds['pickup']:play()
-                            player.hasKey = true
-                            player.keyFrame = keyColor              
+                            gSounds['pickup']:play()                            
+                            Player:SetKey(true, keyColor)             
                         end
                     }
                     table.insert(objects, key)
                 end
-                -- Exit Sign
+                -- Dead End Sign
                 if width - x == 2 then
                     local deadEnd = GameObject {
                         texture = 'deadEnd',
@@ -107,8 +166,8 @@ function LevelMaker.generate(width, height)
                         solid = false,
                         frame = 29
                     }
-                    table.insert(objects, deadEnd)
-                end
+                    objects.deadEnd = deadEnd   -- BORA.BF Changed way of inserting
+                end                             -- due to remove it easily
                 goto tileEnd
             end
 
@@ -155,7 +214,7 @@ function LevelMaker.generate(width, height)
             end
 
             -- chance to spawn a block
-            if math.random(10) == 1 then
+            if math.random(13) == 1 then
                 table.insert(objects,
 
                     -- jump block

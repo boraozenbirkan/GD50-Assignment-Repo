@@ -12,13 +12,26 @@ Player = Class{__includes = Entity}
 
 function Player:init(def)
     Entity.init(self, def)
-    self.score = 0
+    self.score = 0 -- BORA.BF
     hasKey = false
     keyFrame = 1
 end
 
 function Player:update(dt)
     Entity.update(self, dt)
+end
+
+function Player:SetKey(keyGiven, keyColor)
+    if keyGiven then
+        self.hasKey = true
+        self.keyFrame = keyColor
+    else
+        self.hasKey = false
+    end
+end
+
+function Player:GetKey()
+    return self.hasKey
 end
 
 function Player:render()

@@ -17,7 +17,10 @@ end
 
 function StartState:update(dt)
     if love.keyboard.wasPressed('enter') or love.keyboard.wasPressed('return') then
-        gStateMachine:change('play', {level = 1}) -- BORA.BF level design
+        gStateMachine:change('play', {
+            level = 1,
+            score = 0
+        }) -- BORA.BF level design
     end
 end
 
