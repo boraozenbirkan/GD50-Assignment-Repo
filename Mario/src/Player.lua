@@ -13,6 +13,8 @@ Player = Class{__includes = Entity}
 function Player:init(def)
     Entity.init(self, def)
     self.score = 0
+    hasKey = false
+    keyFrame = 1
 end
 
 function Player:update(dt)
@@ -21,6 +23,10 @@ end
 
 function Player:render()
     Entity.render(self)
+    if self.hasKey then
+        love.graphics.draw(gTextures['keysAndLocks'], gFrames['keysAndLocks'][self.keyFrame], 
+            self.x + 15, self.y)
+    end
 end
 
 function Player:checkLeftCollisions(dt)

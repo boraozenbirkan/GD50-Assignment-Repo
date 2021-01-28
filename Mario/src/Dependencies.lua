@@ -77,7 +77,10 @@ gTextures = {
 
     -- BORA.3 Added flag and exit sign before flag
     ['deadEnd'] = love.graphics.newImage('graphics/ladders_and_signs.png'),
-    ['flag'] = love.graphics.newImage('graphics/flag.png')
+    ['flag'] = love.graphics.newImage('graphics/flag.png'),
+
+    -- BORA.2 Keys and Locks 
+    ['keysAndLocks'] = love.graphics.newImage('graphics/keys_and_locks.png')
 }
 
 gFrames = {
@@ -93,7 +96,9 @@ gFrames = {
     ['creatures'] = GenerateQuads(gTextures['creatures'], 16, 16),
     -- BORA.3 Added Flag thing
     ['deadEnd'] = GenerateQuads(gTextures['deadEnd'], 16, 16),
-    ['flag'] = GenerateQuads(gTextures['flag'], 19, 48)
+    ['flag'] = GenerateQuads(gTextures['flag'], 19, 48),
+    -- BORA.2 Keys and locks
+    ['keysAndLocks'] = GenerateQuads(gTextures['keysAndLocks'], 16, 16)
 }
 
 -- these need to be added after gFrames is initialized because they refer to gFrames from within

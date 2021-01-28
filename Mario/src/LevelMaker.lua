@@ -27,7 +27,8 @@ function LevelMaker.generate(width, height)
         table.insert(tiles, {})
     end
 
-    local last = 0 -- BORA.BF 
+    local last = 0 -- BORA.BF     
+    keyColor = math.random(4) -- BORA.2 Key Color randomly selected
 
     -- column by column generation instead of row; sometimes better for platformers
     for x = 1, width do
@@ -63,6 +64,7 @@ function LevelMaker.generate(width, height)
             end
 
             -- BORA.BF Having Mario-like end which is stairs and post
+            -- BORA.2 Key placed
             if width - x <= 9 then
                 last = last + 1
                 -- Stairs
@@ -70,6 +72,27 @@ function LevelMaker.generate(width, height)
                     for y = 7 - last, 7 do
                         tiles[y][x] = Tile(x, y, tileID, y == (7 - last) and topper or nil, tileset, topperset)
                     end
+                end
+                -- Key Placed
+                if last == 4 then
+                    local key = GameObject {
+                        texture = 'keysAndLocks',
+                        x = (x - 1) * TILE_SIZE,
+                        y = 1 * TILE_SIZE,
+                        width = 16,
+                        height = 16,
+                        collidable = false,
+                        consumable = true,
+                        solid = false,
+                        frame = keyColor,
+
+                        onConsume = function(player)
+                            gSounds['pickup']:play()
+                            player.hasKey = true
+                            player.keyFrame = keyColor              
+                        end
+                    }
+                    table.insert(objects, key)
                 end
                 -- Exit Sign
                 if width - x == 2 then
