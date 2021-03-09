@@ -24,8 +24,15 @@ GAME_OBJECT_DEFS = {
             }
         }
     },
+    -- BORA.2 define pot
     ['pot'] = {
-        -- TODO
+        type = 'pot',
+        texture = 'tiles',
+        frame = 14,
+        width = 16,
+        height = 16,
+        solid = true,
+        consumed = false 
     },  
     -- BORA.1 define heart
     ['heart'] = {

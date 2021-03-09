@@ -44,6 +44,10 @@ function GameObject:render(adjacentOffsetX, adjacentOffsetY)
     if self.type == 'heart' then
         love.graphics.draw(gTextures[self.texture], gFrames[self.texture][self.frame],
             self.x + adjacentOffsetX, self.y + adjacentOffsetY)
+    -- BORA.2 Added pots
+    elseif self.type == 'pot' then
+        love.graphics.draw(gTextures[self.texture], gFrames[self.texture][self.frame],
+            self.x + adjacentOffsetX, self.y + adjacentOffsetY)
     else
         love.graphics.draw(gTextures[self.texture], gFrames[self.texture][self.states[self.state].frame or self.frame],
             self.x + adjacentOffsetX, self.y + adjacentOffsetY)
