@@ -38,6 +38,8 @@ function Entity:init(def)
     self.flashTimer = 0
 
     self.dead = false
+    -- BORA.1 Powerup update
+    self.spawnedPowerup = false
 end
 
 function Entity:createAnimations(animations)

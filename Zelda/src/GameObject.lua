@@ -18,6 +18,8 @@ function GameObject:init(def, x, y)
 
     -- whether it acts as an obstacle or not
     self.solid = def.solid
+    -- BORA.1 whether is consumed or not
+    self.consumed = def.consumed
 
     self.defaultState = def.defaultState
     self.state = self.defaultState
@@ -38,6 +40,12 @@ function GameObject:update(dt)
 end
 
 function GameObject:render(adjacentOffsetX, adjacentOffsetY)
-    love.graphics.draw(gTextures[self.texture], gFrames[self.texture][self.states[self.state].frame or self.frame],
-        self.x + adjacentOffsetX, self.y + adjacentOffsetY)
+    -- BORA.1 Modified for powerup
+    if self.type == 'heart' then
+        love.graphics.draw(gTextures[self.texture], gFrames[self.texture][self.frame],
+            self.x + adjacentOffsetX, self.y + adjacentOffsetY)
+    else
+        love.graphics.draw(gTextures[self.texture], gFrames[self.texture][self.states[self.state].frame or self.frame],
+            self.x + adjacentOffsetX, self.y + adjacentOffsetY)
+    end
 end

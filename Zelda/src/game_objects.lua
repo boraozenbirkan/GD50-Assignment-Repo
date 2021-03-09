@@ -26,5 +26,15 @@ GAME_OBJECT_DEFS = {
     },
     ['pot'] = {
         -- TODO
+    },  
+    -- BORA.1 define heart
+    ['heart'] = {
+        type = 'heart',
+        texture = 'hearts',
+        frame = 5,
+        width = 12,
+        height = 12,
+        solid = false,
+        consumed = false    
     }
 }

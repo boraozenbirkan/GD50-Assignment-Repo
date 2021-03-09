@@ -90,9 +90,9 @@ function PlayerSwingSwordState:render()
     -- debug for player and hurtbox collision rects VV
     --
 
-    -- love.graphics.setColor(255, 0, 255, 255)
-    -- love.graphics.rectangle('line', self.player.x, self.player.y, self.player.width, self.player.height)
-    -- love.graphics.rectangle('line', self.swordHurtbox.x, self.swordHurtbox.y,
-    --     self.swordHurtbox.width, self.swordHurtbox.height)
-    -- love.graphics.setColor(255, 255, 255, 255)
+    love.graphics.setColor(255, 0, 255, 255)
+    love.graphics.rectangle('line', self.player.x, self.player.y, self.player.width, self.player.height)
+    love.graphics.rectangle('line', self.swordHitbox.x, self.swordHitbox.y,
+        self.swordHitbox.width, self.swordHitbox.height)
+    love.graphics.setColor(255, 255, 255, 255)
 end

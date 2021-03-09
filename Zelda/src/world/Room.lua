@@ -159,6 +159,28 @@ function Room:update(dt)
         -- remove entity from the table if health is <= 0
         if entity.health <= 0 then
             entity.dead = true
+
+            if not entity.spawnedPowerup then
+                -- BORA.1 Chance to drop a heart
+                if math.random(4) == 1 then
+                    local heart = GameObject(
+                        GAME_OBJECT_DEFS['heart'], entity.x, entity.y
+                    )
+
+                    heart.onCollide = function()
+                        if heart.consumed == false then
+                            self.player.health = math.min(self.player.health + 2, 6)            
+                            gSounds['powerup']:play()
+                            heart.consumed = true
+                        end
+                    end
+
+                    table.insert(self.objects, heart)
+                end
+            end
+
+            entity.spawnedPowerup = true
+
         elseif not entity.dead then
             entity:processAI({room = self}, dt)
             entity:update(dt)
@@ -203,7 +225,8 @@ function Room:render()
     end
 
     for k, object in pairs(self.objects) do
-        object:render(self.adjacentOffsetX, self.adjacentOffsetY)
+        -- BORA.1 Modified for powerup
+        if not object.consumed then object:render(self.adjacentOffsetX, self.adjacentOffsetY) end
     end
 
     for k, entity in pairs(self.entities) do
