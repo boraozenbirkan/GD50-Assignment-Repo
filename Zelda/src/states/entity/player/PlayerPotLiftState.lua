@@ -26,7 +26,9 @@ function PlayerPotLiftState:update(dt)
 
     if self.player.currentAnimation.timesPlayed > 0 then
         self.player.currentAnimation.timesPlayed = 0
-        self.player:changeState('pot-idle')
+        self.player:changeState('pot-idle', {
+            pot = self.pot
+        })
         self.pot.picked = true
     end
 

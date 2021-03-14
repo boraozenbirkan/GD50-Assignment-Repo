@@ -20,6 +20,7 @@ TILE_SIZE = 16
 -- entity constants
 --
 PLAYER_WALK_SPEED = 60
+POT_SPEED = 150
 
 --
 -- map constants

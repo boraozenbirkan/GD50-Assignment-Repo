@@ -33,6 +33,9 @@ GAME_OBJECT_DEFS = {
         height = 16,
         solid = true,
         picked = false,
+        moveDirection = nil,
+        launchPosX = 0,
+        launchPosY = 0,
         consumed = false 
     },  
     -- BORA.1 define heart

@@ -32,16 +32,44 @@ function GameObject:init(def, x, y)
     self.width = def.width
     self.height = def.height
 
-    -- TEST
-
     -- default empty collision callback
     self.onCollide = function() end
 end
 
-function GameObject:update(player, dt)
+function GameObject:update(room, player, dt)
     if self.type == 'pot' and self.picked then
-        self.x = player.x
-        self.y = player.y - 10
+        -- if we got a move direction, that means we have been launched
+        if self.moveDirection == nil then
+            self.x = player.x
+            self.y = player.y - 10
+        else
+            if self.moveDirection == 'left' then
+                self.x = self.x - POT_SPEED * dt
+            elseif self.moveDirection == 'right' then
+                self.x = self.x + POT_SPEED * dt
+            elseif self.moveDirection == 'down' then
+                self.y = self.y + POT_SPEED * dt
+            elseif self.moveDirection == 'up' then
+                self.y = self.y - POT_SPEED * dt
+            end
+
+            if (self.x > self.launchPosX + TILE_SIZE * 4 or self.x < self.launchPosX - TILE_SIZE * 4 or
+            self.y > self.launchPosY + TILE_SIZE * 4 or self.y < self.launchPosY - TILE_SIZE * 4 ) then
+                self.consumed = true
+            end
+
+            if not self.consumed then
+                for i = #room.entities, 1, -1 do
+                    local entity = room.entities[i]
+    
+                    if self:collides(entity) then
+                        entity:damage(1)
+                        self.consumed = true
+                    end
+                end
+            end
+        end
+        
     end
 end
 

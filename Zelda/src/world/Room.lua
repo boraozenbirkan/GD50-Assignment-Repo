@@ -210,7 +210,7 @@ function Room:update(dt)
     end
 
     for k, object in pairs(self.objects) do
-        object:update(self.player, dt)
+        object:update(self, self.player, dt)
 
         -- trigger collision callback on object
         if self.player:collides(object) then

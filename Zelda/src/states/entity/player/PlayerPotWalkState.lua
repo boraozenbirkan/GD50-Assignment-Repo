@@ -9,6 +9,10 @@ function PlayerPotWalkState:init(player, dungeon)
     self.entity.offsetX = 0
 end
 
+function PlayerPotWalkState:enter(params)    
+    self.pot = params.pot
+end
+
 function PlayerPotWalkState:update(dt)
     if love.keyboard.isDown('left') then
         self.entity.direction = 'left'
@@ -23,11 +27,16 @@ function PlayerPotWalkState:update(dt)
         self.entity.direction = 'down'
         self.entity:changeAnimation('potWalk-down')
     else
-        self.entity:changeState('pot-idle')
+        self.entity:changeState('pot-idle', {
+            pot = self.pot
+        })
     end
 
     if love.keyboard.wasPressed('space') then
-        --self.entity:changeState('swing-sword')
+        self.pot.moveDirection = self.entity.direction
+        self.pot.launchPosX = self.entity.x
+        self.pot.launchPosY = self.entity.y
+        self.entity:changeState('idle')
     end
 
     -- perform base collision detection against walls
