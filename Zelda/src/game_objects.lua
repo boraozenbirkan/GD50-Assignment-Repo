@@ -32,6 +32,7 @@ GAME_OBJECT_DEFS = {
         width = 16,
         height = 16,
         solid = true,
+        picked = false,
         consumed = false 
     },  
     -- BORA.1 define heart

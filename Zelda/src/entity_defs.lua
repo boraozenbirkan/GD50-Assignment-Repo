@@ -69,6 +69,71 @@ ENTITY_DEFS = {
                 interval = 0.05,
                 looping = false,
                 texture = 'character-swing-sword'
+            },
+            -- BORA.2 
+            ['potWalk-left'] = {
+                frames = {13, 14, 15, 16},
+                interval = 0.155,
+                texture = 'pot-walk' 
+            },
+            ['potWalk-right'] = {
+                frames = {5, 6, 7, 8},
+                interval = 0.155,
+                texture = 'pot-walk' 
+            },
+            ['potWalk-down'] = {
+                frames = {1, 2, 3, 4},
+                interval = 0.155,
+                texture = 'pot-walk' 
+            },
+            ['potWalk-up'] = {
+                frames = {9, 10, 11, 12},
+                interval = 0.155,
+                texture = 'pot-walk' 
+            },
+            ['potIdle-left'] = {
+                frames = {13},
+                interval = 0.155,
+                texture = 'pot-walk' 
+            },
+            ['potIdle-right'] = {
+                frames = {5},
+                interval = 0.155,
+                texture = 'pot-walk' 
+            },
+            ['potIdle-down'] = {
+                frames = {1},
+                interval = 0.155,
+                texture = 'pot-walk' 
+            },
+            ['potIdle-up'] = {
+                frames = {9},
+                interval = 0.155,
+                texture = 'pot-walk' 
+            },
+            ['potLift-left'] = {
+                frames = {10, 11, 12},
+                interval = 0.155,
+                looping = false,
+                texture = 'pot-lift' 
+            },
+            ['potLift-right'] = {
+                frames = {4, 5, 6},
+                interval = 0.155,
+                looping = false,
+                texture = 'pot-lift' 
+            },
+            ['potLift-down'] = {
+                frames = {1, 2, 3},
+                interval = 0.155,
+                looping = false,
+                texture = 'pot-lift' 
+            },
+            ['potLift-up'] = {
+                frames = {7, 8, 9},
+                interval = 0.155,
+                looping = false,
+                texture = 'pot-lift' 
             }
         }
     },

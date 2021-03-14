@@ -69,6 +69,14 @@ function PlayerSwingSwordState:update(dt)
         end
     end
 
+    -- BORA.2
+    for k, object in pairs(self.dungeon.currentRoom.objects) do
+        if object:collides(self.swordHitbox) and object.type == 'pot' then
+            object.picked = true
+            self.player:changeState('pot-idle')
+        end
+    end
+
     -- if we've fully elapsed through one cycle of animation, change back to idle state
     if self.player.currentAnimation.timesPlayed > 0 then
         self.player.currentAnimation.timesPlayed = 0

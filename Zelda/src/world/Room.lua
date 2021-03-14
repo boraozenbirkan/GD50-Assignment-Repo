@@ -210,12 +210,12 @@ function Room:update(dt)
     end
 
     for k, object in pairs(self.objects) do
-        object:update(dt)
+        object:update(self.player, dt)
 
         -- trigger collision callback on object
         if self.player:collides(object) then
             -- BORA.2
-            if object.type == 'pot' then
+            if object.solid then
                 self.player:potCollision(dt)
             end
             object:onCollide()
@@ -272,6 +272,11 @@ function Room:render()
     
     if self.player then
         self.player:render()
+    end
+
+    -- BORA.2 to make pot up
+    for k, object in pairs(self.objects) do
+        if not object.consumed and object.type == 'pot' then object:render(self.adjacentOffsetX, self.adjacentOffsetY) end
     end
 
     love.graphics.setStencilTest()

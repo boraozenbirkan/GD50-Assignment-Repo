@@ -23,6 +23,7 @@ function Player:collides(target)
                 selfY + selfHeight < target.y or selfY > target.y + target.height)
 end
 
+-- BORA.2
 function Player:potCollision(dt)
     if self.direction == 'left' then
         self.x = self.x + PLAYER_WALK_SPEED * dt
