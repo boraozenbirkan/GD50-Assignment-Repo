@@ -72,8 +72,10 @@ function PlayerSwingSwordState:update(dt)
     -- BORA.2
     for k, object in pairs(self.dungeon.currentRoom.objects) do
         if object:collides(self.swordHitbox) and object.type == 'pot' then
-            object.picked = true
-            self.player:changeState('pot-idle')
+            --object.picked = true
+            self.player:changeState('pot-lift', {
+                pot = object
+            })
         end
     end
 

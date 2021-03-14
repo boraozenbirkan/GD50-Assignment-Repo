@@ -27,7 +27,7 @@ function PlayerPotWalkState:update(dt)
     end
 
     if love.keyboard.wasPressed('space') then
-        self.entity:changeState('swing-sword')
+        --self.entity:changeState('swing-sword')
     end
 
     -- perform base collision detection against walls

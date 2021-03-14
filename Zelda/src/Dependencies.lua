@@ -53,11 +53,12 @@ gTextures = {
 }
 
 gFrames = {
-    ['tiles'] = GenerateQuads(gTextures['tiles'], 16, 16),
-    ['character-walk'] = GenerateQuads(gTextures['character-walk'], 16, 32),
     -- BORA.2
     ['pot-walk'] = GenerateQuads(gTextures['pot-walk'], 16, 32),
     ['pot-lift'] = GenerateQuads(gTextures['pot-lift'], 16, 32),
+    
+    ['tiles'] = GenerateQuads(gTextures['tiles'], 16, 16),
+    ['character-walk'] = GenerateQuads(gTextures['character-walk'], 16, 32),
     ['character-swing-sword'] = GenerateQuads(gTextures['character-swing-sword'], 32, 32),
     ['entities'] = GenerateQuads(gTextures['entities'], 16, 16),
     ['hearts'] = GenerateQuads(gTextures['hearts'], 16, 16),

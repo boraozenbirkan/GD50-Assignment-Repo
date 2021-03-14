@@ -36,7 +36,7 @@ function PlayState:init()
         -- BORA.2 
         ['pot-walk'] = function() return PlayerPotWalkState(self.player, self.dungeon) end,
         ['pot-idle'] = function() return PlayerPotIdleState(self.player) end,
-        ['pot-lift'] = function() return PlayerPotLiftState(self.player, self.dungeon) end
+        ['pot-lift'] = function() return PlayerPotLiftState(self.player) end
     }
     self.player:changeState('idle')
 end

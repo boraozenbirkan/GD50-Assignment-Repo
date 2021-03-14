@@ -276,7 +276,7 @@ function Room:render()
 
     -- BORA.2 to make pot up
     for k, object in pairs(self.objects) do
-        if not object.consumed and object.type == 'pot' then object:render(self.adjacentOffsetX, self.adjacentOffsetY) end
+        if not object.consumed and object.picked == true then object:render(self.adjacentOffsetX, self.adjacentOffsetY) end
     end
 
     love.graphics.setStencilTest()

@@ -13,13 +13,5 @@ function PlayerPotIdleState:update(dt)
         self.entity:changeState('pot-walk')
     end
 
-    if self.entity.direction == 'left' then
-        self.entity:changeAnimation('potIdle-left')
-    elseif self.entity.direction == 'right' then
-        self.entity:changeAnimation('potIdle-right')
-    elseif self.entity.direction == 'down' then
-        self.entity:changeAnimation('potIdle-down')
-    else
-        self.entity:changeAnimation('potIdle-up')
-    end
+    self.entity:changeAnimation('potIdle-' .. self.entity.direction)
 end
