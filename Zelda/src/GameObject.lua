@@ -53,11 +53,13 @@ function GameObject:update(room, player, dt)
                 self.y = self.y - POT_SPEED * dt
             end
 
+            -- Disappear after travel 4 tiles
             if (self.x > self.launchPosX + TILE_SIZE * 4 or self.x < self.launchPosX - TILE_SIZE * 4 or
             self.y > self.launchPosY + TILE_SIZE * 4 or self.y < self.launchPosY - TILE_SIZE * 4 ) then
                 self.consumed = true
             end
 
+            -- Kill if collide with an enemy and disappear
             if not self.consumed then
                 for i = #room.entities, 1, -1 do
                     local entity = room.entities[i]
@@ -66,6 +68,28 @@ function GameObject:update(room, player, dt)
                         entity:damage(1)
                         self.consumed = true
                     end
+                end
+            end
+
+            -- Disappear if collide with walls (left, right, up, down)
+            if self.moveDirection == 'left' then
+                if self.x <= MAP_RENDER_OFFSET_X + TILE_SIZE then 
+                    self.consumed = true
+                end
+            elseif self.moveDirection == 'right' then
+                if self.x + self.width >= VIRTUAL_WIDTH - TILE_SIZE * 2 then
+                    self.consumed = true
+                end
+            elseif self.moveDirection == 'up' then
+                if self.y <= MAP_RENDER_OFFSET_Y + TILE_SIZE - self.height / 2 then 
+                    self.consumed = true
+                end
+            elseif self.moveDirection == 'down' then
+                local bottomEdge = VIRTUAL_HEIGHT - (VIRTUAL_HEIGHT - MAP_HEIGHT * TILE_SIZE) 
+                    + MAP_RENDER_OFFSET_Y - TILE_SIZE
+        
+                if self.y + self.height >= bottomEdge then
+                    self.consumed = true
                 end
             end
         end
