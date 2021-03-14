@@ -23,6 +23,18 @@ function Player:collides(target)
                 selfY + selfHeight < target.y or selfY > target.y + target.height)
 end
 
+function Player:potCollision(dt)
+    if self.direction == 'left' then
+        self.x = self.x + PLAYER_WALK_SPEED * dt
+    elseif self.direction == 'right' then
+        self.x = self.x - PLAYER_WALK_SPEED * dt
+    elseif self.direction == 'up' then
+        self.y = self.y + PLAYER_WALK_SPEED * dt
+    else 
+        self.y = self.y - PLAYER_WALK_SPEED * dt
+    end
+end
+
 function Player:render()
     Entity.render(self)
     

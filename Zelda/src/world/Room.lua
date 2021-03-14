@@ -214,6 +214,10 @@ function Room:update(dt)
 
         -- trigger collision callback on object
         if self.player:collides(object) then
+            -- BORA.2
+            if object.type == 'pot' then
+                self.player:potCollision(dt)
+            end
             object:onCollide()
         end
     end
