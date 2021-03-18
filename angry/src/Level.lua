@@ -18,6 +18,9 @@ function Level:init()
     -- actual collision callbacks can cause stack overflow and other errors
     self.destroyedBodies = {}
 
+    -- BORA
+    self.playerHit = false
+
     -- define collision callbacks for our world; the World object expects four,
     -- one for different stages of any given collision
     function beginContact(a, b, coll)
@@ -75,6 +78,8 @@ function Level:init()
 
         -- if we hit the ground, play a bounce sound
         if types['Player'] and types['Ground'] then
+            -- BORA
+            self.playerHit = true
             gSounds['bounce']:stop()
             gSounds['bounce']:play()
         end
@@ -106,6 +111,10 @@ function Level:init()
 
     -- obstacles guarding aliens that we can destroy
     self.obstacles = {}
+
+    -- BORA
+    self.players = {}
+    self.didSplit = false
 
     -- simple edge shape to represent collision for ground
     self.edgeShape = love.physics.newEdgeShape(0, 0, VIRTUAL_WIDTH * 3, 0)
@@ -170,6 +179,17 @@ function Level:update(dt)
         end
     end
 
+    -- BORA
+    for k, player in pairs(self.players) do
+        local xPos, yPos = player.body:getPosition()
+        local xVel, yVel = player.body:getLinearVelocity()
+        
+        if xPos < 0 or (math.abs(xVel) + math.abs(yVel) < 5) then
+            player.body:destroy()
+            table.remove(self.players, k)
+        end
+    end
+
     -- replace launch marker if original alien stopped moving
     if self.launchMarker.launched then
         local xPos, yPos = self.launchMarker.alien.body:getPosition()
@@ -180,11 +200,44 @@ function Level:update(dt)
             self.launchMarker.alien.body:destroy()
             self.launchMarker = AlienLaunchMarker(self.world)
 
+            -- BORA
+            self.didSplit = false
+            self.playerHit = false
+
             -- re-initialize level if we have no more aliens
             if #self.aliens == 0 then
                 gStateMachine:change('start')
             end
         end
+    end
+
+    -- BORA Split
+    if love.keyboard.isDown('space') and not self.didSplit 
+            and self.launchMarker.launched and not self.playerHit then
+
+        local playerVelocityX, playerVelocityY = self.launchMarker.alien.body:getLinearVelocity()
+        local playerX = self.launchMarker.alien.body:getX()
+        local playerY = self.launchMarker.alien.body:getY()
+
+        local upperAlien = Alien(self.world, 'round', playerX, playerY - 30, 'Player')
+        local belowAlien = Alien(self.world, 'round', playerX, playerY + 30, 'Player')
+
+        upperAlien.body:setLinearVelocity(playerVelocityX, playerVelocityY - 30) 
+        belowAlien.body:setLinearVelocity(playerVelocityX, playerVelocityY + 30)
+
+        upperAlien.fixture:setRestitution(0.4)
+        belowAlien.fixture:setRestitution(0.4)
+        upperAlien.body:setAngularDamping(1)
+        belowAlien.body:setAngularDamping(1)
+
+        table.insert(self.players, upperAlien)
+        table.insert(self.players, belowAlien)
+        
+        self.didSplit = true
+    end
+
+    if #self.aliens == 0 and #love.mouse.keysPressed > 0 then
+        gStateMachine:change('start')
     end
 end
 
@@ -203,6 +256,11 @@ function Level:render()
 
     for k, obstacle in pairs(self.obstacles) do
         obstacle:render()
+    end
+
+    -- BORA
+    for k, player in pairs(self.players) do
+        player:render()
     end
 
     -- render instruction text if we haven't launched bird

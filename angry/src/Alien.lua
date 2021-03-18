@@ -31,6 +31,9 @@ function Alien:init(world, type, x, y, userData)
 
     -- used to keep track of despawning the Alien and flinging it
     self.launched = false
+
+    -- BORA
+    self.hit = false
 end
 
 function Alien:render()
