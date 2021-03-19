@@ -46,6 +46,8 @@ require 'src/states/game/FadeOutState'
 require 'src/states/game/PlayState'
 require 'src/states/game/StartState'
 require 'src/states/game/TakeTurnState'
+-- BORA
+require 'src/states/game/MenuState'
 
 require 'src/world/Level'
 require 'src/world/tile_ids'

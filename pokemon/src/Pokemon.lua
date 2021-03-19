@@ -97,7 +97,8 @@ end
 
 function Pokemon:levelUp()
     self.level = self.level + 1
-    self.expToLevel = self.level * self.level * 5 * 0.75
+    -- BORA Adjusted the next level value
+    self.expToLevel = self.expToLevel + self.expToLevel * 0.75
 
     return self:statsLevelUp()
 end

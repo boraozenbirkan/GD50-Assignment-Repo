@@ -185,9 +185,12 @@ function TakeTurnState:victory()
         function()
 
             -- sum all IVs and multiply by level to get exp amount
-            local exp = (self.opponentPokemon.HPIV + self.opponentPokemon.attackIV +
+            -- BORA Increased the exp
+            local exp = 3 * (self.opponentPokemon.HPIV + self.opponentPokemon.attackIV +
                 self.opponentPokemon.defenseIV + self.opponentPokemon.speedIV) * self.opponentPokemon.level
-
+            -- BORA But avoided anormal values
+            math.min(exp, self.playerPokemon.expToLevel + self.playerPokemon.expToLevel * 0.20)
+            
             gStateStack:push(BattleMessageState('You earned ' .. tostring(exp) .. ' experience points!',
                 function() end, false))
 
@@ -206,18 +209,20 @@ function TakeTurnState:victory()
                     self.playerPokemon.currentExp = self.playerPokemon.currentExp + exp
 
                     -- level up if we've gone over the needed amount
-                    if self.playerPokemon.currentExp > self.playerPokemon.expToLevel then
+                    if self.playerPokemon.currentExp >= self.playerPokemon.expToLevel then
                         
                         gSounds['levelup']:play()
 
                         -- set our exp to whatever the overlap is
                         self.playerPokemon.currentExp = self.playerPokemon.currentExp - self.playerPokemon.expToLevel
-                        self.playerPokemon:levelUp()
 
                         gStateStack:push(BattleMessageState('Congratulations! Level Up!',
                         function()
                             self:fadeOutWhite()
                         end))
+                        
+                        -- BORA MenuState
+                        gStateStack:push(MenuState(self.battleState, self.playerPokemon))
                     else
                         self:fadeOutWhite()
                     end
