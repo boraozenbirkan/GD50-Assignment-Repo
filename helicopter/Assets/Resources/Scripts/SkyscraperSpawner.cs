@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using System.Collections;
 
 public class SkyscraperSpawner : MonoBehaviour {
@@ -8,6 +10,8 @@ public class SkyscraperSpawner : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		// BORA.2 Speed bug fix
+		 speed = 10f;
 
 		// aysnchronous infinite skyscraper spawning
 		StartCoroutine(SpawnSkyscrapers());
@@ -28,6 +32,8 @@ public class SkyscraperSpawner : MonoBehaviour {
 			// randomly increase the speed by 1
 			if (Random.Range(1, 4) == 1) {
 				speed += 1f;
+				// BORA.2
+				Debug.Log("BUG FIX | Current Speed: " + speed);
 			}
 
 			// wait between 1-5 seconds for a new skyscraper to spawn
