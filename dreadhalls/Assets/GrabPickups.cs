@@ -13,6 +13,8 @@ public class GrabPickups : MonoBehaviour {
 
 	void OnControllerColliderHit(ControllerColliderHit hit) {
 		if (hit.gameObject.tag == "Pickup") {
+			// BORA.3 Increse number of Maza by 1
+			FindObjectOfType<DontDestroy>().IncreaseMazeNumber();
 			pickupSoundSource.Play();
 			SceneManager.LoadScene("Play");
 		}

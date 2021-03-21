@@ -33,6 +33,11 @@ public class LevelGenerator : MonoBehaviour {
 	// we use these to dig through our maze and to spawn the pickup at the end
 	private int mazeX = 4, mazeY = 1;
 
+	// BORA.1 Flag for walls to determine non-wall places. 
+	bool wallNow = false;
+	bool charNow = false;
+	int numberOfHoles = 0;
+
 	// Use this for initialization
 	void Start () {
 
@@ -46,6 +51,7 @@ public class LevelGenerator : MonoBehaviour {
 					CreateChildPrefab(wallPrefab, wallsParent, x, 1, z);
 					CreateChildPrefab(wallPrefab, wallsParent, x, 2, z);
 					CreateChildPrefab(wallPrefab, wallsParent, x, 3, z);
+					wallNow = true;	// BORA.1 Wall Flag
 				} else if (!characterPlaced) {
 					
 					// place the character controller on the first empty wall we generate
@@ -55,14 +61,22 @@ public class LevelGenerator : MonoBehaviour {
 
 					// flag as placed so we never consider placing again
 					characterPlaced = true;
+					charNow = true; // BORA char flag
 				}
 
 				// create floor and ceiling
-				CreateChildPrefab(floorPrefab, floorParent, x, 0, z);
+				// BORA.1 Creating 4 holes 
+				if (!wallNow && numberOfHoles < 5 && Random.value < 0.05 && !charNow){
+					numberOfHoles++;
+				}
+				else
+					CreateChildPrefab(floorPrefab, floorParent, x, 0, z);
 
 				if (generateRoof) {
 					CreateChildPrefab(ceilingPrefab, wallsParent, x, 4, z);
 				}
+				wallNow = false; // BORA Reset the wall flag
+				charNow = false; // BORA Reset the char flag
 			}
 		}
 
