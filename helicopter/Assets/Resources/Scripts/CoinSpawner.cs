@@ -26,9 +26,9 @@ public class CoinSpawner : MonoBehaviour {
 			// instantiate all coins in this row separated by some random amount of space
 			for (int i = 0; i < coinsThisRow; i++) {
 
-				// BORA.1 I give 1 in 4 chance to spawn a gem
+				// BORA.1 I give 1 in 5 chance to spawn a gem
 				int coinType;
-				if (Random.Range(0, 4) == 0) { coinType = 1; } else { coinType = 0; }
+				if (Random.Range(0, 5) == 0) { coinType = 1; } else { coinType = 0; }
 
 				// Updated below code
 				Instantiate(prefabs[coinType], new Vector3(26, Random.Range(-10, 10), 10), Quaternion.identity);
