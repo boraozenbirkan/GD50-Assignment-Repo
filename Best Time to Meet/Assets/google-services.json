@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1075381118786",
+    "project_id": "best-time-to-meet",
+    "storage_bucket": "best-time-to-meet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1075381118786:android:f398ac2b86e1fe68200adb",
+        "android_client_info": {
+          "package_name": "com.LanguageUpdate.BestTimetoMeet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1075381118786-92jpk5jh81ipjnjnoon9rasg97911ufg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxL19a6GVHksz8NOLRtOlvZVup6izIH0U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1075381118786-92jpk5jh81ipjnjnoon9rasg97911ufg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
