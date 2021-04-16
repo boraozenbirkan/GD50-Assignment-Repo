@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Firebase;
+using Firebase.Auth;
+using Firebase.Database;
 
 public class AppManager : MonoBehaviour{
 
-    public static AppManager instance;
+    //public static AppManager instance;
+
+    FirebaseAuth auth;
+    DatabaseReference DBref;
 
     [Header ("Landing Scene Objects")]
     [SerializeField] GameObject loginCanvas = null;
@@ -23,30 +29,36 @@ public class AppManager : MonoBehaviour{
     [SerializeField] GameObject planCalendarCanvas = null;
     [SerializeField] TextMeshProUGUI calIDText = null;
     [SerializeField] TextMeshProUGUI planMessageText = null;
+    [SerializeField] TextMeshProUGUI usernameText = null;
+    string username = null;
 
-    /*
-    void Awake(){
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(this);
-    }*/
-
-    public void SetCalanderID(string calID) {
-
+    
+    void Start(){
+        //Set the authentication instance object
+        //auth = FirebaseAuth.DefaultInstance;
+        //DBref = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
     public void CreateNewCalender() {
         // Creat ID like 123-456
-        int calID = Random.Range(0, 1000);
-        calIDText.text = calID.ToString() + "-";
-        calID = Random.Range(0, 1000);
+        int calID = Random.Range(100, 1000);
+        string callID_str = "";
+        calIDText.text = callID_str = calID.ToString() + "-";
+        calID = Random.Range(100, 1000);
         calIDText.text += calID.ToString();
+        callID_str += calID.ToString();
 
+        // Push the cal to the DB
+        FindObjectOfType<FirebaseManager>().CreateCalendar(callID_str);
+
+        // Update Username Display
+        FindObjectOfType<CalManager>().UpdateUsernameDisplay(GetUsername());
+        
+        // Change Canvases
         planLandingCanvas.SetActive(false);
         planCalendarCanvas.SetActive(true);
 
-        StartCoroutine(CallMessage(planMessageText, "New Calendar has been created!", 3f));
+        StartCoroutine(CallMessage(planMessageText, "New Calendar created!", 3f));
     }
 
     IEnumerator CallMessage(TextMeshProUGUI textBox, string msg, float seconds) {
@@ -73,10 +85,18 @@ public class AppManager : MonoBehaviour{
             registerConfirmationInput.text = messageText.text = "";
     }
 
-    public void LogoutButton() {
+    public void LogoutButton() {        
         SceneManager.LoadScene("LandingScene");
+        FindObjectOfType<FirebaseManager>().SignOut();
     }
 
     #endregion
 
+
+    #region Getters and Setters
+
+    public void SetUsername(string _username) { username = _username; }
+    public string GetUsername() { return username; }
+
+    #endregion
 }

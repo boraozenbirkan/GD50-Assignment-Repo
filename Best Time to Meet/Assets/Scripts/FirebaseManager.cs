@@ -3,16 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using Firebase;
 using Firebase.Auth;
+using Firebase.Database;
 using TMPro;
 using UnityEngine.SceneManagement;
 
 public class FirebaseManager : MonoBehaviour{
+    // Singleton
+    private static FirebaseManager _instance;
+
+    public static FirebaseManager Instance {
+        get {
+            if (_instance == null) {
+                _instance = GameObject.FindObjectOfType<FirebaseManager>();
+            }
+
+            return _instance;
+        }
+    }
 
     //Firebase variables
     [Header("Firebase")]
     [SerializeField] DependencyStatus dependencyStatus;
     [SerializeField] FirebaseAuth auth;
     [SerializeField] FirebaseUser User;
+    [SerializeField] DatabaseReference DBref;
+    Firebase.FirebaseApp firebaseApp;
 
     //Login variables
     [Header("Login")]
@@ -28,8 +43,11 @@ public class FirebaseManager : MonoBehaviour{
     [SerializeField] TMP_InputField passwordRegisterVerifyField = null;
 
 
-
     void Awake() {
+        // Singleton
+
+        DontDestroyOnLoad(gameObject);
+
         //Check that all of the necessary dependencies for Firebase are present on the system
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
             dependencyStatus = task.Result;
@@ -46,6 +64,24 @@ public class FirebaseManager : MonoBehaviour{
         Debug.Log("Setting up Firebase Auth");
         //Set the authentication instance object
         auth = FirebaseAuth.DefaultInstance;
+        DBref = FirebaseDatabase.DefaultInstance.RootReference;
+        // Update Google Services 
+        Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
+            var dependencyStatus = task.Result;
+            if (dependencyStatus == Firebase.DependencyStatus.Available) {
+                // Create and hold a reference to your FirebaseApp,
+                // where app is a Firebase.FirebaseApp property of your application class.
+                firebaseApp = Firebase.FirebaseApp.DefaultInstance;
+
+                // Set a flag here to indicate whether Firebase is ready to use by your app.
+            }
+            else {
+                UnityEngine.Debug.LogError(System.String.Format(
+                  "Could not resolve all Firebase dependencies: {0}", dependencyStatus));
+                // Firebase Unity SDK is not safe to use here.
+            }
+        });
+
     }
 
     //Function for the login button
@@ -101,6 +137,9 @@ public class FirebaseManager : MonoBehaviour{
             messageText.text = "";
             messageText.text = "Logged In";
             SceneManager.LoadScene("PlanScene");
+
+            // Keep it in the AppManager
+            StartCoroutine(PassUsername(User.DisplayName));
         }
     }
 
@@ -147,6 +186,9 @@ public class FirebaseManager : MonoBehaviour{
                 //Now get the result
                 User = RegisterTask.Result;
 
+                // Keep it in the AppManager
+                StartCoroutine(PassUsername(User.DisplayName));
+
                 if (User != null) {
                     //Create a user profile and set the username
                     UserProfile profile = new UserProfile { DisplayName = _username };
@@ -164,13 +206,81 @@ public class FirebaseManager : MonoBehaviour{
                             messageText.text = "Username Set Failed!";
                     }
                     else {
+                        // Write username to the database
+                        StartCoroutine(UpdateUsernameAuth(_username));
+                        StartCoroutine(UpdateUsernameDatabase(_username));
                         //Username is now set
                         //Now return to login screen
-                        AppManager.instance.LandingScene();
+                        FindObjectOfType<AppManager>().LandingScene();
                         messageText.text = "";
                     }
                 }
             }
         }
     }
+
+    IEnumerator PassUsername(string _username) {
+        yield return new WaitForSeconds(0.5f);
+
+        FindObjectOfType<AppManager>().SetUsername(_username);
+    }
+
+    public void CreateCalendar(string _calID) {
+        StartCoroutine(CreateNewCalendar(_calID));
+    }
+
+    public void SignOut() { auth.SignOut(); }
+
+    #region Updates
+
+    public IEnumerator CreateNewCalendar(string _callID) {
+        var DBTask = DBref.Child("calendars").Child(_callID).Child("calendar_ID").SetValueAsync(_callID);
+
+        for (int i = 1; i <= 31; i++) {
+            string strDay = "Day_" + i;
+            DBTask = DBref.Child("calendars").Child(_callID).Child(strDay).SetValueAsync("0");
+        }
+
+        yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
+        if (DBTask.Exception != null) {
+            Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
+        }
+        else {
+            //Database username is now updated
+        }
+    }
+
+    IEnumerator UpdateUsernameAuth(string _username) {
+        //Create a user profile and set the username
+        UserProfile profile = new UserProfile { DisplayName = _username };
+
+        //Call the Firebase auth update user profile function passing the profile with the username
+        var ProfileTask = User.UpdateUserProfileAsync(profile);
+        //Wait until the task completes
+        yield return new WaitUntil(predicate: () => ProfileTask.IsCompleted);
+
+        if (ProfileTask.Exception != null) {
+            Debug.LogWarning(message: $"Failed to register task with {ProfileTask.Exception}");
+        }
+        else {
+            //Auth username is now updated
+        }
+    }
+
+    IEnumerator UpdateUsernameDatabase(string _username) {
+        //Set the currently logged in user username in the database
+        var DBTask = DBref.Child("users").Child(User.UserId).Child("username").SetValueAsync(_username);
+
+        yield return new WaitUntil(predicate: () => DBTask.IsCompleted);
+
+        if (DBTask.Exception != null) {
+            Debug.LogWarning(message: $"Failed to register task with {DBTask.Exception}");
+        }
+        else {
+            //Database username is now updated
+        }
+    }
+
+    #endregion
 }
