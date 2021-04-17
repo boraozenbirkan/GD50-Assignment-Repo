@@ -6,14 +6,15 @@ using TMPro;
 
 public class ButtonBehaviour : MonoBehaviour{
 
-    bool clicked = false;
+    public bool clicked = false;
     Button button = null;
     ColorBlock refColor;
     ColorBlock currentColor;
 
-    private void Start() {
+    private void Awake() {
         button = GetComponent<Button>();
         refColor = button.colors;
+        refColor.normalColor = refColor.selectedColor = Color.white;
         currentColor = refColor;
     }
 
