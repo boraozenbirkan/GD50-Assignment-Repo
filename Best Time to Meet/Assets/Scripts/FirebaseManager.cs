@@ -55,7 +55,6 @@ public class FirebaseManager : MonoBehaviour{
     void Awake() {
         // Singleton
         DontDestroyOnLoad(gameObject);
-        if (_instance != null) { Destroy(gameObject); }
 
         // Check that all of the necessary dependencies for Firebase are present on the system
         FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {

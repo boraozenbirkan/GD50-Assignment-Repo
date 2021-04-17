@@ -1,16 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
-using Firebase;
-using Firebase.Auth;
-using Firebase.Database;
-using UnityEngine.SceneManagement;
 
 public class AppManager : MonoBehaviour{
-    FirebaseAuth auth;
-    DatabaseReference DBref;
 
     [Header ("Landing Scene Objects")]
     [SerializeField] GameObject loginCanvas = null;
