@@ -70,6 +70,10 @@ public class FirebaseManager : MonoBehaviour{
     }
 
     private void Start() {
+        // CS50 Submission
+        Debug.Log("Project Title: Best Time to Meet");
+        Debug.Log("Done by: Bora Özenbirkan from Istanbul, Turkey");
+        Debug.Log("My GitHub account is boraozenbirkan");
         // Set cursor
         emailLoginField.Select();
         emailLoginField.ActivateInputField();
@@ -78,44 +82,47 @@ public class FirebaseManager : MonoBehaviour{
     }
 
     private void Update() {
-        if (Input.GetKeyDown(KeyCode.Tab)) {
-            if (emailLoginField.isFocused) {
-                passwordLoginField.Select();
-                passwordLoginField.ActivateInputField();
+        try {
+            if (Input.GetKeyDown(KeyCode.Tab)) {
+                if (emailLoginField.isFocused) {
+                    passwordLoginField.Select();
+                    passwordLoginField.ActivateInputField();
+                }
+                if (usernameRegisterField.isFocused) {
+                    emailRegisterField.Select();
+                    emailRegisterField.ActivateInputField();
+                }
+                if (emailRegisterField.isFocused) {
+                    passwordRegisterField.Select();
+                    passwordRegisterField.ActivateInputField();
+                }
+                if (passwordRegisterField.isFocused) {
+                    passwordRegisterVerifyField.Select();
+                    passwordRegisterVerifyField.ActivateInputField();
+                }
             }
-            if (usernameRegisterField.isFocused) {
-                emailRegisterField.Select();
-                emailRegisterField.ActivateInputField();
+            if (registerCursor) {
+                // Set cursor
+                usernameRegisterField.ActivateInputField();
+                // Turn off the order
+                registerCursor = false;
             }
-            if (emailRegisterField.isFocused) {
-                passwordRegisterField.Select();
-                passwordRegisterField.ActivateInputField();
+            if (loginCursor) {
+                // Set cursor
+                emailLoginField.ActivateInputField();
+                // Turn off the order
+                loginCursor = false;
             }
-            if (passwordRegisterField.isFocused) {
-                passwordRegisterVerifyField.Select();
-                passwordRegisterVerifyField.ActivateInputField();
+            if (Input.GetKeyDown(KeyCode.Return)) {
+                if (inLoginScreen) {
+                    LoginButton();
+                }
+                if (inRegistrationScreen) {
+                    RegisterButton();
+                }
             }
         }
-        if (registerCursor) {
-            // Set cursor
-            usernameRegisterField.ActivateInputField();
-            // Turn off the order
-            registerCursor = false;
-        }
-        if (loginCursor) {
-            // Set cursor
-            emailLoginField.ActivateInputField();
-            // Turn off the order
-            loginCursor = false;
-        }
-        if (Input.GetKeyDown(KeyCode.Return)) {
-            if (inLoginScreen) {
-                LoginButton();
-            }
-            if (inRegistrationScreen) {
-                RegisterButton();
-            }
-        }
+        catch { }
     }
     //  -------------------------------------------  //
     //  ---------------   BUTTONS   ---------------  //
