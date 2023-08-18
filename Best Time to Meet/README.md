@@ -7,6 +7,15 @@ You can see how the app looks and how to use it by watching this **video: [Best 
 <p align = "center">
   <img src="https://github.com/boraozenbirkan/GD50-Assignment-Repo/assets/59583105/298c9f72-b1ce-4fbe-88ea-574bf05842e8" alt="drawing" width="500"/>
 
+## Key Features
+- Generates a unique ID and password for each calendar to keep it private and protected.
+- User authentication and database
+
+## Challenges
+✅ It was my first project that I used DB and user authentication. I've done that well.
+
+✅ Data visualization on the calendar.
+
 
 ## How To Use
 
