@@ -2,7 +2,10 @@
 
 This is the final project of CS50. This project aims to help crowded people to decide when to meet. There is a heatmap about which days are intensively chosen so that people can easily pick the best day to meet. 
 
-You can see how app looks and how to use it by watching this **video: XXXXXXXX**
+You can see how the app looks and how to use it by watching this **video: [Best Time To Meet](https://www.youtube.com/watch?v=hJsAtVvymnI)**
+
+<p align = "center">
+  <img src="https://github.com/boraozenbirkan/GD50-Assignment-Repo/assets/59583105/298c9f72-b1ce-4fbe-88ea-574bf05842e8" alt="drawing" width="500"/>
 
 
 ## How To Use
@@ -21,13 +24,13 @@ That's all! No need to worry about when to decide! Just use our application!
 
 ## How It Works
 
-I've decided to use Google Firebase system as database infurstracture. There are 2 scenes and in both scenes there are 2 different UI Panels. 
+I've decided to use the Google Firebase system as database infrastructure. There are 2 scenes and in both scenes, there are 2 different UI Panels. 
 
 ### Scenes
 
-The first scene is the **"LandingScene"**. Users will face this scene in the first place. This scene has Login and Register UI Canvases. In the Login canvas, users can log in and select the register option. If the users log in, they will face "PlanScene". If users select the register option, then Login canvas will disappear and Register canvas will appear. In this panel, users can create a new account. After creating the account, Register canvas will disappear and Login canvas will appear. So that the user can log in.
+The first scene is the **"LandingScene"**. Users will face this scene in the first place. This scene has Login and Register UI Canvases. In the Login canvas, users can log in and select the register option. If the users log in, they will face "PlanScene". If users select the register option, then the Login canvas will disappear and the Register canvas will appear. In this panel, users can create a new account. After creating the account, the Register canvas will disappear and the Login canvas will appear. So that the user can log in.
 
-The second scene is the **"PlanScene"**. There are 2 canvases in this scene as well. The first canvas is the "Plan Landing" canvas which users can open an existing calendar or create a new one. After the decision, users will face with the "Plan Calendar" canvas which they will see the calendar and interact with it. 
+The second scene is the **"PlanScene"**. There are 2 canvases in this scene as well. The first canvas is the "Plan Landing" canvas which users can open an existing calendar or create a new one. After the decision, users will face the "Plan Calendar" canvas which they will see the calendar and interact with it. 
 
 ### Objects And Classes
 
